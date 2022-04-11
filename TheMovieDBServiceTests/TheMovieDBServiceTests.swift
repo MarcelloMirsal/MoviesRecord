@@ -1,14 +1,14 @@
 //
-//  MoviesRecordTests.swift
-//  MoviesRecordTests
+//  TheMovieDBServiceTests.swift
+//  TheMovieDBServiceTests
 //
 //  Created by Mohammed Mirsal on 11/04/2022.
 //
 
 import XCTest
-@testable import MoviesRecord
+@testable import TheMovieDBService
 
-class MoviesRecordTests: XCTestCase {
+class TheMovieDBServiceTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
