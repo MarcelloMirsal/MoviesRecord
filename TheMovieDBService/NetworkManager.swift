@@ -7,7 +7,11 @@
 
 import Alamofire
 
-final class NetworkingManager {
+protocol NetworkingManagerProtocol {
+    func json(for urlRequest: URLRequest) async throws -> Data
+}
+
+final class NetworkingManager: NetworkingManagerProtocol {
     let session: Alamofire.Session
     init(sessionConfigs: URLSessionConfiguration = .default) {
         session = .init(configuration: sessionConfigs)

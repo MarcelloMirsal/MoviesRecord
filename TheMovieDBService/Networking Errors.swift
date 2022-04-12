@@ -54,19 +54,19 @@ fileprivate struct AFErrorWrapper {
     }
 }
 
-//public enum ServiceError: Error, LocalizedError, Equatable {
-//    case networkingFailure(NetworkError)
-//    case decoding
-//    case unspecified
-//    public var errorDescription: String? {
-//        switch self {
-//        case .decoding:
-//            return "An error occurred while processing data, please try again."
-//        case .networkingFailure(let networkError):
-//            return networkError.localizedDescription
-//        case .unspecified:
-//            return NetworkError.unspecified.errorDescription
-//        }
-//    }
-//}
+public enum ServiceError: Error, LocalizedError, Equatable {
+    case networkingFailure(NetworkError)
+    case decoding
+    case unspecified
+    public var errorDescription: String? {
+        switch self {
+        case .decoding:
+            return "An error occurred while processing data, please try again."
+        case .networkingFailure(let networkError):
+            return networkError.localizedDescription
+        case .unspecified:
+            return NetworkError.unspecified.errorDescription
+        }
+    }
+}
 
