@@ -32,4 +32,13 @@ class TheMovieDBServiceRouterTests: XCTestCase {
         
         XCTAssertEqual(sut.discoverMoviesRequest().url, idealURL)
     }
+    
+    func testMovieImageRequest_ShouldReturnIdealImageURL() {
+        let imageID = "h4VB6m0RwcicVEZvzftYZyKXs6K.jpg"
+        let idealURL = URL(string: "https://www.themoviedb.org/t/p/w400/\(imageID)")!
+        
+        let imageRequest = sut.imageRequest(forImageId: imageID)
+        
+        XCTAssertEqual(imageRequest.url!, idealURL)
+    }
 }

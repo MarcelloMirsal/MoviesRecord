@@ -7,14 +7,23 @@
 
 import Foundation
 
-class TheMovieDBService {
+public protocol TheMovieDBServiceProtocol {
+    func requestDiscoverMovies<T: Decodable>(page: Int, decodingType: T.Type) async -> Result<T, Error>
+}
+
+
+public final class TheMovieDBService: TheMovieDBServiceProtocol {
     let networkingManager: NetworkingManagerProtocol
     let router = TheMovieDBServiceRouter()
-    init(networkingManager: NetworkingManagerProtocol = NetworkingManager()) {
+    public init() {
+        self.networkingManager = NetworkingManager()
+    }
+    
+    init(networkingManager: NetworkingManagerProtocol) {
         self.networkingManager = networkingManager
     }
     
-    func requestDiscoverMovies<T: Decodable>(page: Int, decodingType: T.Type) async -> Result<T, Error> {
+    public func requestDiscoverMovies<T: Decodable>(page: Int, decodingType: T.Type) async -> Result<T, Error> {
         let urlRequest = router.discoverMoviesRequest(page: page)
         return await networkRequest(urlRequest: urlRequest, decodingType: decodingType)
     }

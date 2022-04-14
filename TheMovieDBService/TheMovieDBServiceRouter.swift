@@ -7,10 +7,12 @@
 
 import Foundation
 
-struct TheMovieDBServiceRouter {
+public struct TheMovieDBServiceRouter {
     let version = "3"
     var baseURL: URL {
         return URL(string: "https://api.themoviedb.org/\(version)")!
+    }
+    public init() {
     }
     
     func discoverMoviesRequest(page: Int = 1) -> URLRequest {
@@ -26,6 +28,12 @@ struct TheMovieDBServiceRouter {
         return URLRequest(url: urlComponents.url!)
     }
     
+    public func imageRequest(forImageId id: String) -> URLRequest {
+        var urlComponents = URLComponents(string: "https://www.themoviedb.org/t/p")!
+        urlComponents.path += Routing.imageSizePath.rawValue
+        urlComponents.path += "/\(id)"
+        return URLRequest(url: urlComponents.url!)
+    }
     
     func parse<T: Decodable>(data: Data, to type: T.Type, decoder: JSONDecoder = .init() ) throws -> T {
         do {
@@ -40,6 +48,7 @@ struct TheMovieDBServiceRouter {
 
 fileprivate enum Routing: String {
     case discoverMoviesPath = "/discover/movie"
+    case imageSizePath = "/w400"
 }
 
 fileprivate enum Queries: String {
