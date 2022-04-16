@@ -18,9 +18,6 @@ final class MockDiscoverMoviesViewModel: DiscoverMoviesViewModel {
         self.mockedIsFeedLoadingData = isFeedLoadingData
         self.isFeedEmpty = isFeedEmpty
     }
-    override var movies: [Movie] {
-        return isFeedEmpty ? [] : [Self.demoMovie, Self.demoMovie2]
-    }
     
     override var isFeedLoadingData: Bool {
         return mockedIsFeedLoadingData
@@ -30,7 +27,15 @@ final class MockDiscoverMoviesViewModel: DiscoverMoviesViewModel {
         return mockedIsInitialFeedFailed
     }
     
+    override var movies: [Movie] {
+        return isFeedEmpty ? [] : [Self.demoMovie, Self.demoMovie2]
+    }
+    
     override func requestFeed() async {
+        
+    }
+    
+    override func requestFeedNextPage() async {
         
     }
 }

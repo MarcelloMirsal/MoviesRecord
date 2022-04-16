@@ -19,21 +19,45 @@ struct DiscoverMoviesView: View {
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: [gridItem], spacing: 16) {
-                    ForEach(viewModel.movies, id: \.id) { movie in
-                        MovieView(title: movie.originalTitle, releaseDate: movie.releaseDate, imageURL: viewModel.imageURL(forImageID: movie.posterPath).url!)
+                    Section {
+                        ForEach(viewModel.movies, id: \.id) { movie in
+                            MovieView(title: movie.originalTitle, releaseDate: viewModel.posterDate(stringDate: movie.releaseDate), imageURL: viewModel.imageURL(forImageID: movie.posterPath))
+                        }
+                    } header: {
+                        HStack {
+                            Text(viewModel.headerDate())
+                                .font(.title2)
+                                .fontWeight(.bold)
+                            Spacer()
+                        }
+                    } footer: {
+                        if viewModel.canShowNextPageLoadingProgress {
+                            TaskProgressView()
+                                .onAppear {
+                                    Task {
+                                        await viewModel.requestFeedNextPage()}
+                                }
+                        }
+                        else if viewModel.canShowNextPageLoadingError {
+                            TryAgainFeedButton(descriptionMessage: viewModel.errorMessage) {
+                                Task {
+                                    await viewModel.requestFeedNextPage()
+                                }
+                            }
+                            .padding()
+                        }
                     }
+
                 }
                 .padding()
             }
             .overlay(content: {
-                if viewModel.isFeedLoadingData {
+                if viewModel.isInitialFeedLoading {
                     TaskProgressView()
                 }
-                if viewModel.isInitialFeedFailedToLoad {
-                    TryAgainFeedButton(descriptionMessage: "\(viewModel.errorMessage ?? "failed")") {
-                        Task {
-                            await viewModel.requestFeed()
-                        }
+                else if viewModel.isInitialFeedFailedToLoad {
+                    TryAgainFeedButton(descriptionMessage: viewModel.errorMessage) {
+                        Task { await viewModel.requestFeed()}
                     }
                     .padding()
                 }
@@ -48,13 +72,21 @@ struct DiscoverMoviesView: View {
 fileprivate struct MovieView: View {
     let title: String
     let releaseDate: String
-    let imageURL: URL
+    let imageURL: URLRequest?
+    
     var body: some View {
         ZStack(alignment: .top) {
-            KFImage(imageURL)
+            KFImage(imageURL?.url)
                 .placeholder({
                     Color(uiColor: .lightGray)
                         .frame(minWidth: 200, minHeight: 300)
+                        .overlay {
+                            Image(systemName: "film")
+                                .resizable()
+                                .scaledToFit()
+                                .font(.body)
+                                .padding()
+                        }
                 })
                 .resizable()
                 .cancelOnDisappear(true)

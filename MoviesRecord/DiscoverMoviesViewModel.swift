@@ -13,7 +13,9 @@ class DiscoverMoviesViewModel: ObservableObject {
     private let movieDBService: TheMovieDBServiceProtocol
     
     @Published
-    private var feedResponse: DiscoverMoviesResponse = .init(page: 0, movies: [], totalPages: 0)
+    private(set) var feedResponse: DiscoverMoviesResponse = .init(page: 0, movies: [], totalPages: 0)
+    
+    
     private(set) var errorMessage: String?
     
     @Published
@@ -26,6 +28,15 @@ class DiscoverMoviesViewModel: ObservableObject {
         }
     }
     
+    
+    var canShowNextPageLoadingProgress: Bool {
+        return canLoadFeedNextPage && feedRequestState != .error
+    }
+    
+    var canShowNextPageLoadingError: Bool {
+        return canLoadFeedNextPage && feedRequestState == .error
+    }
+    
     // MARK: Accessors
     var isFeedLoadingData: Bool {
         return feedRequestState == .loading
@@ -35,13 +46,42 @@ class DiscoverMoviesViewModel: ObservableObject {
         return feedRequestState == .error && feedResponse.totalPages == 0
     }
     
-    var movies: [Movie] {
-        return feedResponse.movies
+    var isInitialFeedLoading: Bool {
+        return feedRequestState == .loading && feedResponse.totalPages == 0
     }
     
-    func imageURL(forImageID imageID: String) -> URLRequest {
+    var canLoadFeedNextPage: Bool {
+        let totalPages = feedResponse.totalPages
+        let nextPage = feedResponse.page + 1
+        return nextPage <= totalPages
+    }
+    
+    
+    func imageURL(forImageID imageID: String?) -> URLRequest? {
+        guard let imageID = imageID else { return nil }
         let theMovieDBServiceRouter = TheMovieDBServiceRouter()
         return theMovieDBServiceRouter.imageRequest(forImageId: imageID)
+    }
+    
+    func posterDate(stringDate: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        guard let date = dateFormatter.date(from: stringDate) else {return stringDate}
+        let posterDateFormatter = DateFormatter()
+        posterDateFormatter.dateFormat = "MMM d, yyyy"
+        return posterDateFormatter.string(from: date)
+    }
+    
+    func headerDate() -> String {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d, yyyy"
+        return dateFormatter.string(from: date)
+    }
+    
+    
+    var movies: [Movie] {
+        return feedResponse.movies
     }
     
     @MainActor
@@ -55,11 +95,16 @@ class DiscoverMoviesViewModel: ObservableObject {
     }
     
     @MainActor
+    private func append(_ newFeedResponse: DiscoverMoviesResponse) {
+        let configuredFeedResponse = DiscoverMoviesResponse(page: newFeedResponse.page, movies: feedResponse.movies + newFeedResponse.movies, totalPages: newFeedResponse.totalPages)
+        set(configuredFeedResponse)
+    }
+    
+    @MainActor
     private func set(feedRequestState: FeedRequestState) {
         self.feedRequestState = feedRequestState
     }
     
-    // MARK: UI calls
     func requestFeed() async {
         guard isFeedLoadingData == false else {
             return
@@ -67,6 +112,16 @@ class DiscoverMoviesViewModel: ObservableObject {
         await set(feedRequestState: .loading)
         let requestResult = await movieDBService.requestDiscoverMovies(page: 1, decodingType: DiscoverMoviesResponse.self)
         await handle(requestResult)
+    }
+    
+    func requestFeedNextPage() async {
+        guard isFeedLoadingData == false, canLoadFeedNextPage else {
+            return
+        }
+        await set(feedRequestState: .loading)
+        let nextPage = feedResponse.page + 1
+        let requestResult = await movieDBService.requestDiscoverMovies(page: nextPage, decodingType: DiscoverMoviesResponse.self)
+        await handleNextPage(requestResult)
     }
     
     // MARK: Handlers
@@ -81,12 +136,24 @@ class DiscoverMoviesViewModel: ObservableObject {
             set(feedRequestState: .error)
         }
     }
+    
+    @MainActor
+    private func handleNextPage(_ requestResult: Result<DiscoverMoviesResponse, Error>) {
+        switch requestResult {
+        case .success(let nextPageFeedResponse):
+            append(nextPageFeedResponse)
+            set(feedRequestState: .success)
+        case .failure(let error):
+            set(errorMessage: error.localizedDescription)
+            set(feedRequestState: .error)
+        }
+    }
 }
 
 struct DiscoverMoviesResponse: Codable {
-    let page: Int
-    let movies: [Movie]
-    let totalPages: Int
+    var page: Int
+    var movies: [Movie]
+    var totalPages: Int
     
     enum CodingKeys: String, CodingKey {
         case page
@@ -96,11 +163,12 @@ struct DiscoverMoviesResponse: Codable {
 }
 
 // MARK: - Movie
-struct Movie: Codable {
+struct Movie: Codable, Equatable, Hashable {
     let genreIDS: [Int]
     let id: Int
     let originalTitle, overview: String
-    let posterPath, releaseDate: String
+    let posterPath: String?
+    let releaseDate: String
     let voteAverage: Double
     
     enum CodingKeys: String, CodingKey {
