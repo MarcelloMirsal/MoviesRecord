@@ -35,6 +35,24 @@ public struct TheMovieDBServiceRouter {
         return URLRequest(url: urlComponents.url!)
     }
     
+    func movieVideosRequest(movieID: String) -> URLRequest {
+        var urlComponents = URLComponents(string: baseURL.absoluteString)!
+        urlComponents.path += Routing.movieVideos(movieID: movieID)
+        urlComponents.queryItems = [
+            .init(name: Queries.apiKey.rawValue, value: NetworkingConstants.apiKey.rawValue)
+        ]
+        return URLRequest(url: urlComponents.url!)
+    }
+    
+    func movieImagesRequest(movieID: String) -> URLRequest {
+        var urlComponents = URLComponents(string: baseURL.absoluteString)!
+        urlComponents.path += Routing.movieImages(movieID: movieID)
+        urlComponents.queryItems = [
+            .init(name: Queries.apiKey.rawValue, value: NetworkingConstants.apiKey.rawValue)
+        ]
+        return URLRequest(url: urlComponents.url!)
+    }
+    
     func parse<T: Decodable>(data: Data, to type: T.Type, decoder: JSONDecoder = .init() ) throws -> T {
         do {
             let decodableObject = try decoder.decode(type, from: data)
@@ -49,6 +67,19 @@ public struct TheMovieDBServiceRouter {
 fileprivate enum Routing: String {
     case discoverMoviesPath = "/discover/movie"
     case imageSizePath = "/w400"
+    case movieDetails = "/movie"
+    
+    static func movieDetails(movieID: String) -> String {
+        return Routing.movieDetails.rawValue.appending("/\(movieID)")
+    }
+    
+    static func movieVideos(movieID: String) -> String {
+        return Self.movieDetails(movieID: movieID).appending("/videos")
+    }
+    
+    static func movieImages(movieID: String) -> String {
+        return Self.movieDetails(movieID: movieID).appending("/images")
+    }
 }
 
 fileprivate enum Queries: String {

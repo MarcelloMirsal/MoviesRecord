@@ -13,7 +13,7 @@ class DiscoverMoviesViewModel: ObservableObject {
     private let movieDBService: TheMovieDBServiceProtocol
     
     @Published
-    private(set) var feedResponse: DiscoverMoviesResponse = .init(page: 0, movies: [], totalPages: 0)
+    private var feedResponse = DiscoverMoviesResponse(page: 0, movies: [], totalPages: 0)
     
     
     private(set) var errorMessage: String?
@@ -64,12 +64,7 @@ class DiscoverMoviesViewModel: ObservableObject {
     }
     
     func posterDate(stringDate: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        guard let date = dateFormatter.date(from: stringDate) else {return stringDate}
-        let posterDateFormatter = DateFormatter()
-        posterDateFormatter.dateFormat = "MMM d, yyyy"
-        return posterDateFormatter.string(from: date)
+        return DateFormatter.sharedFormattedDate(stringDate: stringDate)
     }
     
     func headerDate() -> String {
@@ -150,7 +145,7 @@ class DiscoverMoviesViewModel: ObservableObject {
     }
 }
 
-struct DiscoverMoviesResponse: Codable {
+fileprivate struct DiscoverMoviesResponse: Codable {
     var page: Int
     var movies: [Movie]
     var totalPages: Int
@@ -159,26 +154,6 @@ struct DiscoverMoviesResponse: Codable {
         case page
         case movies = "results"
         case totalPages = "total_pages"
-    }
-}
-
-// MARK: - Movie
-struct Movie: Codable, Equatable, Hashable {
-    let genreIDS: [Int]
-    let id: Int
-    let originalTitle, overview: String
-    let posterPath: String?
-    let releaseDate: String
-    let voteAverage: Double
-    
-    enum CodingKeys: String, CodingKey {
-        case genreIDS = "genre_ids"
-        case id
-        case originalTitle = "original_title"
-        case overview
-        case posterPath = "poster_path"
-        case releaseDate = "release_date"
-        case voteAverage = "vote_average"
     }
 }
 

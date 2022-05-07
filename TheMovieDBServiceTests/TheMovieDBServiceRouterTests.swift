@@ -41,4 +41,25 @@ class TheMovieDBServiceRouterTests: XCTestCase {
         
         XCTAssertEqual(imageRequest.url!, idealURL)
     }
+    
+    func testMovieVideosRequest_ShouldBeEqualToIdeal() {
+        let apiKey = NetworkingConstants.apiKey.rawValue
+        let movieID = "157336"
+        let idealURL = URL(string: "https://api.themoviedb.org/3/movie/\(movieID)/videos?api_key=\(apiKey)")!
+        
+        let movieVideosRequest = sut.movieVideosRequest(movieID: movieID)
+        
+        XCTAssertEqual(movieVideosRequest.url, idealURL)
+        
+    }
+    
+    func testMovieImagesRequest_ShouldBeEqualToIdeal() {
+        let apiKey = NetworkingConstants.apiKey.rawValue
+        let movieID = "157336"
+        let idealURL = URL(string: "https://api.themoviedb.org/3/movie/\(movieID)/images?api_key=\(apiKey)")!
+        
+        let movieImagesRequest = sut.movieImagesRequest(movieID: movieID)
+        
+        XCTAssertEqual(movieImagesRequest.url, idealURL)
+    }
 }

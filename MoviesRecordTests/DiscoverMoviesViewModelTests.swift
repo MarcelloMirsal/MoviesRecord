@@ -26,7 +26,7 @@ class DiscoverMoviesViewModelTests: XCTestCase {
         
         await sut.requestFeed()
         
-        XCTAssertFalse(sut.feedResponse.movies.isEmpty)
+        XCTAssertFalse(sut.movies.isEmpty)
     }
     
     func testRequestFeedWhenAnErrorOccurred_ErrorMessageShouldBeNotNil() async {
@@ -39,15 +39,14 @@ class DiscoverMoviesViewModelTests: XCTestCase {
     }
     
     /// this test is only validate that requesting next page is only allowed when the current page is not  the last page in the feed pagination,
-    func testRequestFeedNextPage_FeedResponseShouldLoadTheNewPage() async {
-        let newPage = 2
+    func testRequestFeedNextPage_FeedResponseShouldCanLoadFeedNewPage() async {
         sut = .init(movieDBService: MockTheMovieDBService(responseData: discoverMoviesResponseData))
         await sut.requestFeed() // set the initial feed response
         
         await sut.requestFeedNextPage()
         
         /// this because both two calls above will return the same mock data(discoverMoviesResponseData)
-        XCTAssertEqual(sut.feedResponse.page+1, newPage)
+        XCTAssertTrue(sut.canLoadFeedNextPage)
     }
 }
 

@@ -12,7 +12,7 @@ struct MainView: View {
         TabView {
             DiscoverMoviesView()
                 .tabItem {
-                    Label("Events", systemImage: "circle.fill")
+                    Label("Discover", systemImage: "chart.bar.xaxis")
                 }
         }
     }

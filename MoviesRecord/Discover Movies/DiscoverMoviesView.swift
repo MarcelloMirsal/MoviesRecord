@@ -15,13 +15,19 @@ struct DiscoverMoviesView: View {
     }
     let gridItem = GridItem.init(.adaptive(minimum: 250), spacing: 16)
     
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: [gridItem], spacing: 16) {
                     Section {
                         ForEach(viewModel.movies, id: \.id) { movie in
-                            MovieView(title: movie.originalTitle, releaseDate: viewModel.posterDate(stringDate: movie.releaseDate), imageURL: viewModel.imageURL(forImageID: movie.posterPath))
+                            NavigationLink {
+                                MovieDetailsView(movie: movie)
+                            } label: {
+                                MovieView(title: movie.originalTitle, releaseDate: viewModel.posterDate(stringDate: movie.releaseDate), imageURL: viewModel.imageURL(forImageID: movie.posterPath))
+                            }
+
                         }
                     } header: {
                         HStack {
@@ -68,7 +74,6 @@ struct DiscoverMoviesView: View {
     }
 }
 
-
 fileprivate struct MovieView: View {
     let title: String
     let releaseDate: String
@@ -86,6 +91,7 @@ fileprivate struct MovieView: View {
                                 .scaledToFit()
                                 .font(.body)
                                 .padding()
+                                .foregroundColor(.black)
                         }
                 })
                 .resizable()
@@ -105,6 +111,7 @@ fileprivate struct MovieView: View {
                         .fontWeight(.bold)
                         .lineLimit(2)
                         .foregroundColor(.white)
+                        .multilineTextAlignment(.leading)
                 }
                 .padding()
                 Spacer()
