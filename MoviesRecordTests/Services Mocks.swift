@@ -9,6 +9,8 @@ import TheMovieDBService
 
 class MockTheMovieDBService: TheMovieDBServiceProtocol {
     
+    
+    
     let responseData: Data
     init(responseData: Data) {
         self.responseData = responseData
@@ -23,6 +25,10 @@ class MockTheMovieDBService: TheMovieDBServiceProtocol {
     }
     
     func requestMovieImages<T>(movieID: String, decodingType: T.Type) async -> Result<T, Error> where T : Decodable {
+        return await handleFakeRequest(decodingType: decodingType)
+    }
+    
+    func requestMovieCasting<T>(movieID: String, decodingType: T.Type) async -> Result<T, Error> where T : Decodable {
         return await handleFakeRequest(decodingType: decodingType)
     }
     

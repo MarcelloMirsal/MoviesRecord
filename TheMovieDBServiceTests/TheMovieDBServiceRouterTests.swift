@@ -62,4 +62,14 @@ class TheMovieDBServiceRouterTests: XCTestCase {
         
         XCTAssertEqual(movieImagesRequest.url, idealURL)
     }
+    
+    func testMovieCastingRequest_ShouldBeEqualToIdealURL() {
+        let movieID = "696806"
+        let apiKey = NetworkingConstants.apiKey.rawValue
+        let idealURL = URL(string: "https://api.themoviedb.org/3/movie/\(movieID)/credits?api_key=\(apiKey)")!
+        
+        let movieCastingRequest = sut.movieCastingRequest(movieID: movieID)
+        
+        XCTAssertEqual(idealURL, movieCastingRequest.url)
+    }
 }

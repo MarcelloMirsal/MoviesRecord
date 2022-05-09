@@ -35,6 +35,13 @@ public struct TheMovieDBServiceRouter {
         return URLRequest(url: urlComponents.url!)
     }
     
+    public func castImageRequest(forImageId id: String) -> URLRequest {
+        var urlComponents = URLComponents(string: "https://www.themoviedb.org/t/p")!
+        urlComponents.path += Routing.castingImageSize.rawValue
+        urlComponents.path += "/\(id)"
+        return URLRequest(url: urlComponents.url!)
+    }
+    
     func movieVideosRequest(movieID: String) -> URLRequest {
         var urlComponents = URLComponents(string: baseURL.absoluteString)!
         urlComponents.path += Routing.movieVideos(movieID: movieID)
@@ -47,6 +54,16 @@ public struct TheMovieDBServiceRouter {
     func movieImagesRequest(movieID: String) -> URLRequest {
         var urlComponents = URLComponents(string: baseURL.absoluteString)!
         urlComponents.path += Routing.movieImages(movieID: movieID)
+        urlComponents.queryItems = [
+            .init(name: Queries.apiKey.rawValue, value: NetworkingConstants.apiKey.rawValue)
+        ]
+        return URLRequest(url: urlComponents.url!)
+    }
+    
+    func movieCastingRequest(movieID: String) -> URLRequest {
+        var urlComponents = URLComponents(string: baseURL.absoluteString)!
+        urlComponents.path += Routing.movieDetails(movieID: movieID)
+        urlComponents.path += Routing.movieCasting.rawValue
         urlComponents.queryItems = [
             .init(name: Queries.apiKey.rawValue, value: NetworkingConstants.apiKey.rawValue)
         ]
@@ -67,7 +84,9 @@ public struct TheMovieDBServiceRouter {
 fileprivate enum Routing: String {
     case discoverMoviesPath = "/discover/movie"
     case imageSizePath = "/w400"
+    case castingImageSize = "/w200"
     case movieDetails = "/movie"
+    case movieCasting = "/credits"
     
     static func movieDetails(movieID: String) -> String {
         return Routing.movieDetails.rawValue.appending("/\(movieID)")

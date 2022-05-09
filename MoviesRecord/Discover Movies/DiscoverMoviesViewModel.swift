@@ -156,9 +156,3 @@ fileprivate struct DiscoverMoviesResponse: Codable {
         case totalPages = "total_pages"
     }
 }
-
-fileprivate enum FeedRequestState {
-    case loading
-    case success
-    case error
-}

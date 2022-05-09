@@ -55,6 +55,18 @@ class TheMovieDBServiceTests: XCTestCase {
             XCTFail("this mocked request should return valid decodable object.")
         }
     }
+    
+    func testRequestMovieCasting_ShouldReturnDecodableObject() async {
+        arrangeSutWithMockedNetworkMangerForSuccessfulResponse()
+        let result = await sut.requestMovieCasting(movieID: "1234", decodingType: [String : String].self)
+        
+        switch result {
+        case .success:
+            break
+        case .failure:
+            XCTFail("this mocked request should return valid decodable object.")
+        }
+    }
 }
 
 // MARK: sut arranges

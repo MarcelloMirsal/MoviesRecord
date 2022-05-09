@@ -195,9 +195,3 @@ fileprivate struct MovieImagesResponse: Codable {
         }
     }
 }
-
-fileprivate enum FeedRequestState {
-    case loading
-    case success
-    case error
-}
