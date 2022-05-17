@@ -72,4 +72,14 @@ class TheMovieDBServiceRouterTests: XCTestCase {
         
         XCTAssertEqual(idealURL, movieCastingRequest.url)
     }
+    
+    func testMovieSearchRequest_ShouldReturnURLEqualToIdeal() {
+        let searchQuery = "searchQuery"
+        let apiKey = NetworkingConstants.apiKey.rawValue
+        let idealURL = URL(string: "https://api.themoviedb.org/3/search/movie?api_key=\(apiKey)&query=\(searchQuery)")!
+        
+        let movieSearchRequest = sut.movieSearchRequest(query: searchQuery)
+        
+        XCTAssertEqual(idealURL, movieSearchRequest.url)
+    }
 }

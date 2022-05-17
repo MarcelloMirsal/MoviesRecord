@@ -10,11 +10,11 @@ import Kingfisher
 
 struct DiscoverMoviesView: View {
     @StateObject var viewModel: DiscoverMoviesViewModel
+    let gridItem = GridItem.init(.adaptive(minimum: 220), spacing: 16)
+    
     init(viewModel: DiscoverMoviesViewModel = .init()) {
         self._viewModel = .init(wrappedValue: viewModel)
     }
-    let gridItem = GridItem.init(.adaptive(minimum: 250), spacing: 16)
-    
     
     var body: some View {
         NavigationView {
@@ -36,6 +36,7 @@ struct DiscoverMoviesView: View {
                                 .fontWeight(.bold)
                             Spacer()
                         }
+                        .dynamicTypeSize(..<DynamicTypeSize.accessibility4)
                     } footer: {
                         if viewModel.canShowNextPageLoadingProgress {
                             TaskProgressView()
@@ -69,8 +70,12 @@ struct DiscoverMoviesView: View {
                 }
             })
             .navigationTitle("Discover")
+            
         }
-        
+        .navigationViewStyle(StackNavigationViewStyle())
+        .tabItem {
+            Label("Discover", systemImage: "chart.bar.xaxis")
+        }
     }
 }
 
@@ -113,6 +118,7 @@ fileprivate struct MovieView: View {
                         .foregroundColor(.white)
                         .multilineTextAlignment(.leading)
                 }
+                .dynamicTypeSize(..<DynamicTypeSize.accessibility2)
                 .padding()
                 Spacer()
             }

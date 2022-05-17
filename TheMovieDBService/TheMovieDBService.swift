@@ -12,6 +12,7 @@ public protocol TheMovieDBServiceProtocol {
     func requestMovieVideos <T: Decodable>(movieID: String, decodingType: T.Type) async -> Result<T, Error>
     func requestMovieImages <T: Decodable>(movieID: String, decodingType: T.Type) async -> Result<T, Error>
     func requestMovieCasting <T: Decodable>(movieID: String, decodingType: T.Type) async -> Result<T, Error>
+    func requestMovieSearch <T: Decodable>(query: String, decodingType: T.Type) async -> Result<T, Error>
 }
 
 
@@ -44,6 +45,11 @@ public final class TheMovieDBService: TheMovieDBServiceProtocol {
     
     public func requestMovieCasting<T>(movieID: String, decodingType: T.Type) async -> Result<T, Error> where T : Decodable {
         let urlRequest = router.movieCastingRequest(movieID: movieID)
+        return await networkRequest(urlRequest: urlRequest, decodingType: decodingType)
+    }
+    
+    public func requestMovieSearch <T: Decodable>(query: String, decodingType: T.Type) async -> Result<T, Error> {
+        let urlRequest = router.movieSearchRequest(query: query)
         return await networkRequest(urlRequest: urlRequest, decodingType: decodingType)
     }
     

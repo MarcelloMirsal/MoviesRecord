@@ -11,9 +11,7 @@ struct MainView: View {
     var body: some View {
         TabView {
             DiscoverMoviesView()
-                .tabItem {
-                    Label("Discover", systemImage: "chart.bar.xaxis")
-                }
+            SearchView()
         }
     }
 }

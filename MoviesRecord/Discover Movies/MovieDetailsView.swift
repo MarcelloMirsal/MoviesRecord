@@ -43,7 +43,7 @@ struct MovieDetailsView: View {
                             .shadow(radius: 40)
                     }
                     else {
-                        HStack(alignment: .bottom) {
+                        HStack(alignment: .center) {
                             VStack(alignment: .leading, spacing: 10) {
                                 Text(viewModel.title)
                                     .font(.title)
@@ -78,11 +78,12 @@ struct MovieDetailsView: View {
                                         .foregroundColor(Color(uiColor: .lightGray))
                                 }
                                 .resizable()
-                            .frame(width: proxy.size.height * 0.65 , height: proxy.size.height * 0.9)
-                            .cornerRadius(16)
-                            .padding(.top, 32)
-                            .padding(.horizontal, 24)
-                            .shadow(radius: 40)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: proxy.size.height * 0.65 , height: proxy.size.height * 0.9)
+                                .cornerRadius(16)
+                                .padding(.top, 32)
+                                .padding(.horizontal, 12)
+                                .shadow(radius: 40)
                             
                         }
                     }
@@ -99,10 +100,10 @@ struct MovieDetailsView: View {
                         HStack {
                             ForEach(1...viewModel.numberOfStars, id: \.self) { count in
                                 if 1...Int(viewModel.rating) ~= count {
-                                    Image(systemName: "star.fill" )
+                                    Image(systemName: "star.fill")
                                         .foregroundColor(.yellow)
                                 } else {
-                                    Image(systemName: "star" )
+                                    Image(systemName: "star")
                                         .foregroundColor(.gray)
                                 }
                             }
@@ -162,7 +163,9 @@ struct MovieDetailsView: View {
                 .padding(12)
                 .padding(.bottom, 32)
             }
+            .dynamicTypeSize(..<DynamicTypeSize.accessibility4)
         })
+            .background(Color(uiColor: .systemGray.withAlphaComponent(0.1)))
             .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -185,18 +188,15 @@ struct MovieDetailsView_Previews: PreviewProvider {
                 }
             }
             .previewInterfaceOrientation(.landscapeLeft)
+            NavigationView {
+                NavigationLink(isActive: .constant(true)) {
+                    MovieDetailsView(movie: .mockedMovie)
+                } label: {
+                    Color.gray
+                }
+            }
+            .previewInterfaceOrientation(.landscapeRight)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
-
-
-
-//    .foregroundColor(Color(uiColor: .lightGray))
-//                            })
-////                            .resizable()
-////                            .aspectRatio(contentMode: .fit)
-////                            .cornerRadius(16)
-////                            .padding(.top, 32)
-////                            .padding(.horizontal, 24)
-////                            .shadow(radius: 40)
-//                    }

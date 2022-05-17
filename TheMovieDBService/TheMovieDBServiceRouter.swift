@@ -70,6 +70,16 @@ public struct TheMovieDBServiceRouter {
         return URLRequest(url: urlComponents.url!)
     }
     
+    func movieSearchRequest(query: String) -> URLRequest {
+        var urlComponents = URLComponents(string: baseURL.absoluteString)!
+        urlComponents.path.append(Routing.movieSearch.rawValue)
+        urlComponents.queryItems = [
+            .init(name: Queries.apiKey.rawValue, value: NetworkingConstants.apiKey.rawValue),
+            .init(name: Queries.searchQuery.rawValue, value: query)
+        ]
+        return URLRequest(url: urlComponents.url!)
+    }
+    
     func parse<T: Decodable>(data: Data, to type: T.Type, decoder: JSONDecoder = .init() ) throws -> T {
         do {
             let decodableObject = try decoder.decode(type, from: data)
@@ -87,6 +97,7 @@ fileprivate enum Routing: String {
     case castingImageSize = "/w200"
     case movieDetails = "/movie"
     case movieCasting = "/credits"
+    case movieSearch = "/search/movie"
     
     static func movieDetails(movieID: String) -> String {
         return Routing.movieDetails.rawValue.appending("/\(movieID)")
@@ -104,5 +115,6 @@ fileprivate enum Routing: String {
 fileprivate enum Queries: String {
     case apiKey = "api_key"
     case page = "page"
+    case searchQuery = "query"
 }
 

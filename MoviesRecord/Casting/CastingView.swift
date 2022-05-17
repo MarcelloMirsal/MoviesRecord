@@ -18,7 +18,7 @@ struct CastingView: View {
         self._viewModel = .init(wrappedValue: MockCastingViewModel(movieID: 0) )
     }
     var body: some View {
-        let columns: [GridItem] = Array(repeating: GridItem(.adaptive(minimum: 150), spacing: 10, alignment: .top), count: 2)
+        let columns: [GridItem] = Array(repeating: GridItem(.adaptive(minimum: 160), spacing: 10, alignment: .top), count: 2)
         ScrollView {
             LazyVGrid(columns: columns , spacing: 10) {
                 ForEach(viewModel.movieCasts, id: \.id) { movieCast in
@@ -31,6 +31,7 @@ struct CastingView: View {
         .background(Color(uiColor: .systemGray5))
         .navigationBarTitle("Casting")
         .navigationBarTitleDisplayMode(.inline)
+        .dynamicTypeSize(..<DynamicTypeSize.accessibility3)
         .overlay(content: {
             if viewModel.isInitialFeedLoading {
                 TaskProgressView()
