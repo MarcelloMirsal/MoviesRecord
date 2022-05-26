@@ -12,7 +12,7 @@ struct MovieDetailsView: View {
     @StateObject var viewModel: MovieDetailsViewModel
     @Environment(\.verticalSizeClass) var verticalSizeClass
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
+    @State private var canShowImagePresentation: Bool = false
     init(movie: Movie) {
         _viewModel = .init(wrappedValue: MovieDetailsViewModel(movie: movie))
     }
@@ -41,6 +41,12 @@ struct MovieDetailsView: View {
                             .padding(.top, 32)
                             .padding(.horizontal, 24)
                             .shadow(radius: 40)
+                            .onTapGesture {
+                                canShowImagePresentation = true
+                            }
+                            .fullScreenCover(isPresented: $canShowImagePresentation, onDismiss: nil) {
+                                ImagePresentationView(imageURL: viewModel.posterURL)
+                            }
                     }
                     else {
                         HStack(alignment: .center) {
@@ -84,6 +90,12 @@ struct MovieDetailsView: View {
                                 .padding(.top, 32)
                                 .padding(.horizontal, 12)
                                 .shadow(radius: 40)
+                                .onTapGesture {
+                                    canShowImagePresentation = true
+                                }
+                                .fullScreenCover(isPresented: $canShowImagePresentation, onDismiss: nil) {
+                                    ImagePresentationView(imageURL: viewModel.posterURL)
+                                }
                             
                         }
                     }

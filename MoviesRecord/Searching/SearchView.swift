@@ -10,15 +10,16 @@ import SwiftUI
 struct SearchView: View {
     @State private var searchingText: String = ""
     @State private var canShowSearchResults = false
-    @State var shouldClearRecentSearchQueries = false
     @StateObject private var viewModel = SearchViewModel()
     @AppStorage("RecentSearchQueries", store: .standard) var recentSearchQueries: String = ""
-
+    
     
     var body: some View {
         NavigationView {
             VStack {
-                LastSearchingView(searchingText: $searchingText, canShowSearchResults: $canShowSearchResults, shouldClearRecentSearchQueries: $shouldClearRecentSearchQueries, lastQueries: viewModel.formattedSearchQueriesArray(from: recentSearchQueries))
+                LastSearchingView(searchingText: $searchingText, canShowSearchResults: $canShowSearchResults, lastQueries: viewModel.formattedSearchQueriesArray(from: recentSearchQueries), clearRecentSearchResultsHandler: {
+                    recentSearchQueries = ""
+                })
                     .searchable(text: $searchingText, placement: .navigationBarDrawer(displayMode: .always), prompt: Text("Search for movies"))
                     .onSubmit(of: .search, {
                         canShowSearchResults = !searchingText.isEmpty
@@ -36,13 +37,8 @@ struct SearchView: View {
                 }
             }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .onChange(of: shouldClearRecentSearchQueries, perform: { newValue in
-            if newValue {
-                recentSearchQueries = ""
-            }
-        })
         .dynamicTypeSize(..<DynamicTypeSize.accessibility4)
+        .navigationViewStyle(StackNavigationViewStyle())
         .tabItem {
             Label("Search", systemImage: "magnifyingglass")
         }
@@ -52,9 +48,9 @@ struct SearchView: View {
 fileprivate struct LastSearchingView: View {
     @Binding var searchingText: String
     @Binding var canShowSearchResults: Bool
-    @Binding var shouldClearRecentSearchQueries: Bool
     @ScaledMetric(relativeTo: .title3) var scale: CGFloat = 20
     let lastQueries: [String]
+    let clearRecentSearchResultsHandler: () -> ()
     
     var body: some View {
         List {
@@ -75,10 +71,10 @@ fileprivate struct LastSearchingView: View {
                 HStack(alignment: .center) {
                     Text("Recent searches")
                         .font(.title3.bold())
-                    .foregroundColor(.black)
+                        .foregroundColor(.primary)
                     Spacer()
                     Button {
-                        shouldClearRecentSearchQueries = true
+                        clearRecentSearchResultsHandler()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .resizable()
@@ -86,6 +82,7 @@ fileprivate struct LastSearchingView: View {
                             .frame(width: scale, height: scale)
                             .foregroundColor(.gray)
                     }
+                    .isHidden(lastQueries.isEmpty)
                 }
                 .padding(.vertical, 4)
             }

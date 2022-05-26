@@ -27,6 +27,9 @@
 		AD35A022282BB4E500259A5D /* MockSearchingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD35A021282BB4E500259A5D /* MockSearchingViewModel.swift */; };
 		AD35ED8728077766008BBD9B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD35ED8628077766008BBD9B /* Preview Assets.xcassets */; };
 		AD35ED8A280777A1008BBD9B /* MockDiscoverMoviesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD35ED89280777A1008BBD9B /* MockDiscoverMoviesViewModel.swift */; };
+		AD36BF7628364E1300BD2FE7 /* ImagePresentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD36BF7428364E1300BD2FE7 /* ImagePresentationViewController.swift */; };
+		AD36BF7728364E1300BD2FE7 /* ImagePresentationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AD36BF7528364E1300BD2FE7 /* ImagePresentationViewController.xib */; };
+		AD36BF7A28364F2900BD2FE7 /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD36BF7928364F2900BD2FE7 /* extensions.swift */; };
 		AD44DD102832BCA800CC26FA /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD44DD0F2832BCA800CC26FA /* SearchResultsView.swift */; };
 		AD9165DD280A0318003215C1 /* UI Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9165DC280A0318003215C1 /* UI Extensions.swift */; };
 		ADE84123280600280089A246 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE84122280600280089A246 /* MainView.swift */; };
@@ -125,6 +128,9 @@
 		AD35A021282BB4E500259A5D /* MockSearchingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSearchingViewModel.swift; sourceTree = "<group>"; };
 		AD35ED8628077766008BBD9B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AD35ED89280777A1008BBD9B /* MockDiscoverMoviesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDiscoverMoviesViewModel.swift; sourceTree = "<group>"; };
+		AD36BF7428364E1300BD2FE7 /* ImagePresentationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePresentationViewController.swift; sourceTree = "<group>"; };
+		AD36BF7528364E1300BD2FE7 /* ImagePresentationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImagePresentationViewController.xib; sourceTree = "<group>"; };
+		AD36BF7928364F2900BD2FE7 /* extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
 		AD44DD0F2832BCA800CC26FA /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		AD9165DC280A0318003215C1 /* UI Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UI Extensions.swift"; sourceTree = "<group>"; };
 		ADE84122280600280089A246 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -223,6 +229,16 @@
 			path = "Preview Assets";
 			sourceTree = "<group>";
 		};
+		AD36BF7828364E1800BD2FE7 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				AD36BF7428364E1300BD2FE7 /* ImagePresentationViewController.swift */,
+				AD36BF7528364E1300BD2FE7 /* ImagePresentationViewController.xib */,
+				AD36BF7928364F2900BD2FE7 /* extensions.swift */,
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		ADCBA547280B794600BFFA66 /* Discover Movies */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,6 +309,7 @@
 		ADECAB132804A5F7002F6CFC /* MoviesRecord */ = {
 			isa = PBXGroup;
 			children = (
+				AD36BF7828364E1800BD2FE7 /* New Group */,
 				ADFD06B82805FD7E0007DF10 /* AppDelegate */,
 				ADFD06B92805FD8D0007DF10 /* Assets */,
 				ADEA91AA282A32F30028D7D9 /* Casting */,
@@ -520,6 +537,7 @@
 			files = (
 				ADECAB212804A5FA002F6CFC /* LaunchScreen.storyboard in Resources */,
 				AD35ED8728077766008BBD9B /* Preview Assets.xcassets in Resources */,
+				AD36BF7728364E1300BD2FE7 /* ImagePresentationViewController.xib in Resources */,
 				ADECAB1E2804A5FA002F6CFC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -562,6 +580,8 @@
 				AD35ED8A280777A1008BBD9B /* MockDiscoverMoviesViewModel.swift in Sources */,
 				ADECAB152804A5F7002F6CFC /* AppDelegate.swift in Sources */,
 				ADEFD70C2828294E0021D787 /* CastingViewModel.swift in Sources */,
+				AD36BF7628364E1300BD2FE7 /* ImagePresentationViewController.swift in Sources */,
+				AD36BF7A28364F2900BD2FE7 /* extensions.swift in Sources */,
 				AD2F9874280F692E0086AC1F /* Extensions.swift in Sources */,
 				AD2F987B280F88DB0086AC1F /* MovieImagesViewController.swift in Sources */,
 				ADEFD710282835A90021D787 /* MockCastingViewModel.swift in Sources */,

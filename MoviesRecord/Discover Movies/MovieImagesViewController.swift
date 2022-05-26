@@ -153,6 +153,14 @@ extension MovieImagesViewController: UICollectionViewDelegate {
         guard let movieImageCell = cell as? MovieImageCell else { return }
         movieImageCell.imageView.kf.cancelDownloadTask()
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let movieImage = dataSource.itemIdentifier(for: indexPath) else {return}
+        let imageURL = getImageURL(imagePath: movieImage.filePath)
+        let imagePresentationViewController = ImagePresentationViewController(imageURL: imageURL.url)
+        imagePresentationViewController.modalPresentationStyle = .fullScreen
+        present(imagePresentationViewController, animated: true, completion: nil)
+    }
 }
 
 fileprivate class MovieImageCell: UICollectionViewCell {

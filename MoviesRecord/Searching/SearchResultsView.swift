@@ -35,7 +35,7 @@ struct SearchResultsView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: proxy.size.width * 0.3, height: proxy.size.width * 0.3)
-                            .cornerRadius(8)
+                            .shadow(color: Color("Shadow") ,radius: 12)
                         VStack(alignment: .leading, spacing: 8) {
                             Text(movie.originalTitle)
                                 .font(.headline)
@@ -46,11 +46,10 @@ struct SearchResultsView: View {
                         }
                     }
                     .padding(.vertical)
-                    .shadow(radius: 12)
                 }
-
             }
             .listStyle(.plain)
+            
         }
         .overlay(content: {
             if viewModel.isInitialFeedLoading {
