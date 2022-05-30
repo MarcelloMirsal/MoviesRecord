@@ -23,33 +23,13 @@ struct SearchResultsView: View {
                 NavigationLink {
                     MovieDetailsView(movie: movie)
                 } label: {
-                    HStack(alignment: .center, spacing: 8) {
-                        KFImage(viewModel.imageURL(imagePath: movie.posterPath)?.url)
-                            .placeholder({
-                                Image(systemName: "film")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: proxy.size.width * 0.3, height: proxy.size.width * 0.3)
-                                    .foregroundColor(.secondary)
-                            })
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: proxy.size.width * 0.3, height: proxy.size.width * 0.3)
-                            .shadow(color: Color("Shadow") ,radius: 12)
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(movie.originalTitle)
-                                .font(.headline)
-                                .lineLimit(2)
-                            Text(DateFormatter.sharedFormattedDate(stringDate: movie.releaseDate))
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .padding(.vertical)
+                    MovieListCell(movieTitle: movie.originalTitle, imageURL: viewModel.imageURL(imagePath: movie.posterPath)?.url, releaseData: DateFormatter.sharedFormattedDate(stringDate: movie.releaseDate), proxySize: proxy.size)
                 }
             }
             .listStyle(.plain)
-            
+            .onAppear {
+                print(proxy.size, " from SearchResults")
+            }
         }
         .overlay(content: {
             if viewModel.isInitialFeedLoading {

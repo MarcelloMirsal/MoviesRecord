@@ -37,7 +37,8 @@ class MovieDetailsViewModel: ObservableObject {
         return movieGenres
     }
     var rating: Double {
-        return floor(movie.voteAverage / 2)
+        let rating = floor(movie.voteAverage / 2)
+        return rating <= 0 ? 1 : rating
     }
     var overview: String {
         movie.overview

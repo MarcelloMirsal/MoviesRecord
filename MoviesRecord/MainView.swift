@@ -11,6 +11,8 @@ struct MainView: View {
     var body: some View {
         TabView {
             DiscoverMoviesView()
+            ListsView()
+                .environment(\.managedObjectContext, CoreDataStack.shared.viewContext)
             SearchView()
         }
     }
