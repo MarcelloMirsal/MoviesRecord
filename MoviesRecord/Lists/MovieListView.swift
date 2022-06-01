@@ -36,7 +36,7 @@ struct MovieListView: View {
                     }
                 }
             }
-            .navigationTitle(movieList.name ?? "")
+            .navigationTitle(movieList.name)
             .listStyle(.plain)
         }
     }

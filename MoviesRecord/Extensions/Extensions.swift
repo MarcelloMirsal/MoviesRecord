@@ -7,7 +7,13 @@
 
 import Foundation
 
-
+extension String {
+    /// this method check Self after trimming whitespaces if it empty or not
+    func isValidAsInput() -> Bool {
+        guard trimmingCharacters(in: .whitespaces).isEmpty else {return true}
+        return false
+    }
+}
 extension DateFormatter {
     
     static func sharedFormattedDate(stringDate: String) -> String {
