@@ -10,15 +10,13 @@ import TheMovieDBService
 
 struct MovieListView: View {
     @EnvironmentObject var movieList: MovieList
-    @Environment(\.managedObjectContext) var viewContext
-    
     @State private var selectedListItem: MovieListItem?
+    let viewContext = CoreDataStack.shared.viewContext
+    
     var listItems: [MovieListItem] {
         return movieList.movieListItems?.array.map({$0 as? MovieListItem}).compactMap({$0}) ?? []
     }
     let movieDBRouter = TheMovieDBServiceRouter()
-    
-    
     
     var body: some View {
         GeometryReader { proxy in

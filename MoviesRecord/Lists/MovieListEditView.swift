@@ -11,16 +11,18 @@ struct MovieListEditView: View {
     @StateObject private var viewModel: ListsViewModel = .init()
     @Environment(\.presentationMode) var presentationMode
     let movieListToEdit: MovieList
-    @State private var movieListName: String
+    @State var movieListNameText: String
+    private let movieListOriginalName: String
     init(movieListToEdit: MovieList) {
         self.movieListToEdit = movieListToEdit
-        self._movieListName = .init(initialValue: movieListToEdit.name)
+        self.movieListOriginalName = movieListToEdit.name
+        self._movieListNameText = .init(initialValue: movieListToEdit.name)
     }
 
     var body: some View {
         NavigationView {
             Form {
-                TextField("List name", text: $movieListName)
+                TextField("List name", text: $movieListNameText)
                     .submitLabel(SubmitLabel.done)
                     .onSubmit {
                         saveListChanges()
@@ -30,7 +32,7 @@ struct MovieListEditView: View {
                             Button("Save") {
                                 saveListChanges()
                             }
-                            .disabled(!movieListName.isValidAsInput())
+                            .disabled(!movieListNameText.isValidAsInput())
                         }
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button("Cancel") {
@@ -40,16 +42,16 @@ struct MovieListEditView: View {
                     })
             }
             .onChange(of: movieListToEdit, perform: { newValue in
-                movieListName = "QQQQ"
+                movieListNameText = "QQQQ"
             })
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Edit \(movieListToEdit.name)")
+            .navigationTitle("Edit \(movieListOriginalName)")
         }
     }
 
     func saveListChanges() {
-        guard movieListName.isValidAsInput() else {return}
-        viewModel.edit(movieListToEdit, editedName: movieListName)
+        guard movieListNameText.isValidAsInput() else {return}
+        viewModel.edit(movieListToEdit, editedName: movieListNameText)
         presentationMode.wrappedValue.dismiss()
     }
 }

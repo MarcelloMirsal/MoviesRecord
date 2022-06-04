@@ -8,10 +8,6 @@
 import SwiftUI
 
 struct ListsView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \MovieList.createDate, ascending: false)],
-        animation: .default) private var movieLists: FetchedResults<MovieList>
     
     @State private var shouldPresentListCreationView = false
     @State private var canShowConfirmationDialog = false
@@ -23,9 +19,11 @@ struct ListsView: View {
     
     var body: some View {
         NavigationView {
-            List(movieLists) { movieList in
+            List {
+            ForEach(viewModel.movieLists) { movieList in
                 NavigationLink(tag: movieList, selection: $selectedMovieList) {
-                    MovieListView().environmentObject(movieList)
+                    MovieListView()
+                        .environmentObject(movieList)
                 } label: {
                     HStack(spacing: 8) {
                         Text(movieList.name)
@@ -42,7 +40,6 @@ struct ListsView: View {
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
-                    
                     Button {
                         movieListToEdit = movieList
                     } label: {
@@ -50,52 +47,58 @@ struct ListsView: View {
                     }
                     .tint(.blue)
                     .controlSize(ControlSize.large)
-                    
+
                 }
             }
-            .sheet(isPresented: $shouldPresentListCreationView, content: {
-                CreateMovieListView()
-                    .environment(\.managedObjectContext, viewContext)
-            })
-            .sheet(item: $movieListToEdit, content: { movieListToEdit in
-                MovieListEditView(movieListToEdit: movieListToEdit)
-                    .environment(\.managedObjectContext, viewContext)
-            })
-            .confirmationDialog("are you sure you want to delete List '\(movieListToDelete?.name ?? "")' ?", isPresented: $canShowConfirmationDialog, titleVisibility: .visible, presenting: movieListToDelete, actions: { data in
-                Button("Delete", role: .destructive) {
-                    guard let movieListToDelete = movieListToDelete else { return }
-                    viewModel.delete(movieListToDelete)
-                }
-            })
-            .listStyle(.plain)
-            .toolbar(content: {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        shouldPresentListCreationView = true
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                }
-            })
-            .overlay {
-                if movieLists.isEmpty {
-                    VStack(alignment: .center, spacing: 8) {
-                        Text("No Movies Lists")
-                            .fontWeight(.bold)
-                        Text("Lists lets you save movies in lists to keep track of them like Favorites, Watched and Family lists")
-                    }
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding()
-                }
-            }
-            .navigationTitle("Lists")
         }
+        .sheet(isPresented: $shouldPresentListCreationView, content: {
+            CreateMovieListView()
+        })
+        .sheet(item: $movieListToEdit, content: { movieListToEdit in
+            MovieListEditView(movieListToEdit: movieListToEdit)
+        })
+        .confirmationDialog("are you sure you want to delete List '\(movieListToDelete?.name ?? "")' ?", isPresented: $canShowConfirmationDialog, titleVisibility: .visible, presenting: movieListToDelete, actions: { data in
+            Button("Delete", role: .destructive) {
+                guard let movieListToDelete = movieListToDelete else { return }
+                viewModel.delete(movieListToDelete)
+            }
+        })
+        .listStyle(.plain)
+        .onDisappear(perform: {
+            viewModel.shouldApplyUpdates = false
+        })
+        .onAppear(perform: {
+            selectedMovieList = nil
+            viewModel.shouldApplyUpdates = true
+        })
+        .toolbar(content: {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    shouldPresentListCreationView = true
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        })
+        .overlay {
+            if viewModel.movieLists.isEmpty {
+                VStack(alignment: .center, spacing: 8) {
+                    Text("No Movies Lists")
+                        .fontWeight(.bold)
+                    Text("Lists lets you save movies in lists to keep track of them like Favorites, Watched and Family lists")
+                }
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .padding()
+            }
+        }
+        .navigationTitle("Lists")
+    }
         .tabItem {
             Label("Lists", systemImage: "list.triangle")
         }
         .dynamicTypeSize(..<DynamicTypeSize.accessibility2)
-    }
+}
 }
 
 struct ListsView_Previews: PreviewProvider {

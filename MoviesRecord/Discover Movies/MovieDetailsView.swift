@@ -192,6 +192,7 @@ struct MovieDetailsView: View {
                     .environment(\.managedObjectContext, CoreDataStack.shared.viewContext)
             })
             .background(Color(uiColor: .systemGray.withAlphaComponent(0.1)))
+            .navigationBarTitle("Movie details")
             .navigationBarTitleDisplayMode(.inline)
     }
 }

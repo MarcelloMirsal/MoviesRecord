@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CreateMovieListView: View {
-    @StateObject private var viewModel: ListsViewModel = .init()
     @Environment(\.presentationMode) var presentationMode
     @State private var movieListName: String = ""
     
@@ -41,7 +40,8 @@ struct CreateMovieListView: View {
     
     func saveList() {
         guard movieListName.isValidAsInput() else {return}
-        viewModel.createNewMovieList(name: movieListName)
+        let movieListFactory = MovieListFactory(context: CoreDataStack.shared.viewContext)
+        movieListFactory.createNewMovieList(name: movieListName)
         presentationMode.wrappedValue.dismiss()
     }
 }
