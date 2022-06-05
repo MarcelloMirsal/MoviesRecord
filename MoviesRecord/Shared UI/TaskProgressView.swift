@@ -12,7 +12,7 @@ struct TaskProgressView: View {
         ProgressView()
             .tint(.primary)
             .padding(18)
-            .background(Color(uiColor: .systemFill))
+            .background(Material.ultraThinMaterial)
             .cornerRadius(8)
     }
 }

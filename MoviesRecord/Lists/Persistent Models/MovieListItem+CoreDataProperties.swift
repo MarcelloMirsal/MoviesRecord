@@ -17,9 +17,9 @@ extension MovieListItem {
     }
 
     @NSManaged public var apiID: Int64
-    @NSManaged public var date: Date?
+    @NSManaged public var date: Date
     @NSManaged public var posterPath: String?
-    @NSManaged public var title: String?
+    @NSManaged public var title: String
     @NSManaged public var movieList: MovieList?
 
 }

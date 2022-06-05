@@ -7,10 +7,12 @@
 
 import Foundation
 import CoreData
+import Combine
 
 class ListsViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
     private let coreDataStackContext = CoreDataStack.shared.viewContext
     private var fetchRequestController: NSFetchedResultsController<MovieList>
+    private var anyCancellable = Set<AnyCancellable>()
     @Published var movieLists = [MovieList]()
     @Published var shouldApplyUpdates = true
     
@@ -22,7 +24,22 @@ class ListsViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDele
         fetchRequestController.delegate = self
         try? fetchRequestController.performFetch()
         movieLists = fetchRequestController.fetchedObjects ?? []
+        $shouldApplyUpdates
+            .sink(receiveValue: handleShouldApplyUpdates(newValue:))
+            .store(in: &anyCancellable)
     }
+    
+    func handleShouldApplyUpdates(newValue: Bool) {
+        if newValue == true {
+            refreshMovieLists()
+        }
+    }
+    
+    private func refreshMovieLists() {
+        try? fetchRequestController.performFetch()
+        movieLists = fetchRequestController.fetchedObjects ?? []
+    }
+    
     func createNewMovieList(name: String) {
         guard name.isValidAsInput() else {return}
         let movieListFactory = MovieListFactory(context: coreDataStackContext)

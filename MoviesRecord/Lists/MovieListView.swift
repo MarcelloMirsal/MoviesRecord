@@ -22,9 +22,9 @@ struct MovieListView: View {
         GeometryReader { proxy in
             List(listItems) { listItem in
                 NavigationLink(tag: listItem, selection: $selectedListItem) {
-                    MovieDetailsView(movie: .mockedMovie)
+                    MovieDetailsView(prototypeMovie: getPrototypeMovie(from: listItem))
                 } label: {
-                    MovieListCell(movieTitle: listItem.title ?? "", imageURL: movieDBRouter.imageRequest(forImageId: listItem.posterPath ?? "").url, releaseData: DateFormatter.stringDate(fromSharedFormattedDate: listItem.date ?? .init()), proxySize: proxy.size)
+                    MovieListCell(movieTitle: listItem.title, imageURL: movieDBRouter.imageRequest(forImageId: listItem.posterPath ?? "").url, releaseData: DateFormatter.stringDate(fromSharedFormattedDate: listItem.date ), proxySize: proxy.size)
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button(role: .destructive) {
@@ -38,7 +38,14 @@ struct MovieListView: View {
             .listStyle(.plain)
         }
     }
+    
+    func getPrototypeMovie(from movieListItem: MovieListItem) -> Movie {
+        let releaseDate = DateFormatter.stringDate(fromSharedFormattedDate: movieListItem.date)
+        return .init(genreIDS: [], id: Int(movieListItem.apiID), originalTitle: movieListItem.title, overview: "", posterPath: movieListItem.posterPath, releaseDate: releaseDate, voteAverage: 0)
+    }
 }
+
+
 
 struct MovieListView_Previews: PreviewProvider {
     static var previews: some View {

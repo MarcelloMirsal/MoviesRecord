@@ -28,6 +28,16 @@ public struct TheMovieDBServiceRouter {
         return URLRequest(url: urlComponents.url!)
     }
     
+    public func movieDetailsRequest(movieID: String) -> URLRequest {
+        let apiKeyQuery = Queries.apiKey.rawValue
+        var urlComponents = URLComponents(string: baseURL.absoluteString)!
+        urlComponents.path += Routing.movieDetails(movieID: movieID)
+        urlComponents.queryItems = [
+            .init(name: apiKeyQuery, value: NetworkingConstants.apiKey.rawValue)
+        ]
+        return .init(url: urlComponents.url!)
+    }
+    
     public func imageRequest(forImageId id: String) -> URLRequest {
         var urlComponents = URLComponents(string: "https://www.themoviedb.org/t/p")!
         urlComponents.path += Routing.imageSizePath.rawValue

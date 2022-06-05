@@ -15,7 +15,10 @@ struct MovieDetailsView: View {
     @State private var canShowImagePresentation: Bool = false
     @State private var canShowMovieListsSelectionView: Bool = false
     init(movie: Movie) {
-        _viewModel = .init(wrappedValue: MovieDetailsViewModel(movie: movie))
+        _viewModel = .init(wrappedValue: .init(movie: movie))
+    }
+    init(prototypeMovie: Movie) {
+        _viewModel = .init(wrappedValue: .init(prototypeMovie: prototypeMovie))
     }
     
     var isPortrait: Bool {
@@ -194,6 +197,12 @@ struct MovieDetailsView: View {
             .background(Color(uiColor: .systemGray.withAlphaComponent(0.1)))
             .navigationBarTitle("Movie details")
             .navigationBarTitleDisplayMode(.inline)
+            .overlay( content: {
+                if viewModel.isLoadingMovieDetails {
+                    TaskProgressView()
+                }
+            })
+            .disabled(viewModel.isLoadingMovieDetails)
     }
 }
 

@@ -17,6 +17,10 @@ class MockTheMovieDBService: TheMovieDBServiceProtocol {
         return await handleFakeRequest(decodingType: decodingType)
     }
     
+    func requestMovieDetails<T>(movieID: String, decodingType: T.Type) async -> Result<T, Error> where T : Decodable {
+        return await handleFakeRequest(decodingType: decodingType)
+    }
+    
     func requestMovieVideos<T>(movieID: String, decodingType: T.Type) async -> Result<T, Error> where T : Decodable {
         return await handleFakeRequest(decodingType: decodingType)
     }
