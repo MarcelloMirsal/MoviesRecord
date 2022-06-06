@@ -11,7 +11,9 @@ struct MainView: View {
     var body: some View {
         TabView {
             DiscoverMoviesView()
+            ListsView()
             SearchView()
+            ExtraInfoView()
         }
     }
 }

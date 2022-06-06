@@ -7,8 +7,15 @@
 
 import Foundation
 
-
+extension String {
+    /// this method check Self after trimming whitespaces if it empty or not
+    func isValidAsInput() -> Bool {
+        guard trimmingCharacters(in: .whitespaces).isEmpty else {return true}
+        return false
+    }
+}
 extension DateFormatter {
+    
     static func sharedFormattedDate(stringDate: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -16,5 +23,17 @@ extension DateFormatter {
         let posterDateFormatter = DateFormatter()
         posterDateFormatter.dateFormat = "MMM d, yyyy"
         return posterDateFormatter.string(from: date)
+    }
+    
+    static func date(fromSharedFormattedStringDate stringDate: String) -> Date {
+        let sharedDateFormatter = DateFormatter()
+        sharedDateFormatter.dateFormat = "MMM d, yyyy"
+        return sharedDateFormatter.date(from: stringDate) ?? .init()
+    }
+    
+    static func stringDate(fromSharedFormattedDate date: Date) -> String {
+        let sharedDateFormatter = DateFormatter()
+        sharedDateFormatter.dateFormat = "MMM d, yyyy"
+        return sharedDateFormatter.string(from: date)
     }
 }

@@ -19,7 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         self.window = UIWindow(windowScene: windowScene)
-        self.window?.rootViewController = UIHostingController(rootView: MainView())
+        let mainView = MainView()
+        self.window?.rootViewController = UIHostingController(rootView: mainView)
         self.window?.makeKeyAndVisible()
     }
 
@@ -38,6 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
+        CoreDataStack.shared.saveContext()
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
@@ -49,8 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        CoreDataStack.shared.saveContext()
     }
-
-
 }
 
