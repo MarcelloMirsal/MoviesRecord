@@ -25,7 +25,7 @@ struct MovieListsSelectionView: View {
                     handleMovieListSelection()
                     presentationMode.wrappedValue.dismiss()
                 } label: {
-                    Text(movieList.name)
+                    Text(movieList.listName)
                 }
                 .foregroundColor(.primary)
             }

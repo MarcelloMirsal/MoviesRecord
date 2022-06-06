@@ -40,7 +40,7 @@ struct CreateMovieListView: View {
     
     func saveList() {
         guard movieListName.isValidAsInput() else {return}
-        let movieListFactory = MovieListFactory(context: CoreDataStack.shared.viewContext)
+        let movieListFactory = MovieListFactory()
         movieListFactory.createNewMovieList(name: movieListName)
         presentationMode.wrappedValue.dismiss()
     }

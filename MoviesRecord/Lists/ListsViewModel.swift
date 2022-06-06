@@ -10,17 +10,19 @@ import CoreData
 import Combine
 
 class ListsViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
-    private let coreDataStackContext = CoreDataStack.shared.viewContext
-    private var fetchRequestController: NSFetchedResultsController<MovieList>
+    private var coreDataStackContext: NSManagedObjectContext {
+        return CoreDataStack.shared.viewContext
+    }
+    private var fetchRequestController: NSFetchedResultsController<MovieList>!
     private var anyCancellable = Set<AnyCancellable>()
     @Published var movieLists = [MovieList]()
     @Published var shouldApplyUpdates = true
     
     override init() {
+        super.init()
         let fetchRequest = MovieList.fetchRequest()
         fetchRequest.sortDescriptors = [.init(keyPath: \MovieList.createDate, ascending: false)]
         self.fetchRequestController = .init(fetchRequest: fetchRequest, managedObjectContext: coreDataStackContext, sectionNameKeyPath: nil, cacheName: nil)
-        super.init()
         fetchRequestController.delegate = self
         try? fetchRequestController.performFetch()
         movieLists = fetchRequestController.fetchedObjects ?? []
@@ -36,13 +38,17 @@ class ListsViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDele
     }
     
     private func refreshMovieLists() {
+        let fetchRequest = MovieList.fetchRequest()
+        fetchRequest.sortDescriptors = [.init(keyPath: \MovieList.createDate, ascending: false)]
+        self.fetchRequestController = .init(fetchRequest: fetchRequest, managedObjectContext: coreDataStackContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchRequestController.delegate = self
         try? fetchRequestController.performFetch()
         movieLists = fetchRequestController.fetchedObjects ?? []
     }
     
     func createNewMovieList(name: String) {
         guard name.isValidAsInput() else {return}
-        let movieListFactory = MovieListFactory(context: coreDataStackContext)
+        let movieListFactory = MovieListFactory()
         movieListFactory.createNewMovieList(name: name)
     }
     
@@ -59,9 +65,8 @@ class ListsViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDele
         guard shouldApplyUpdates else {return}
         switch type {
         case .insert:
-            guard let indexPath = newIndexPath else {return}
             guard let movieListToInsert = anObject as? MovieList else {return}
-            movieLists.insert(movieListToInsert, at: indexPath.row)
+            movieLists.insert(movieListToInsert, at: 0)
         case .delete:
             guard let movieListToDelete = anObject as? MovieList else {return}
             movieLists.removeAll(where: {$0.objectID == movieListToDelete.objectID})

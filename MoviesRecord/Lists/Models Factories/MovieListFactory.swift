@@ -9,7 +9,7 @@ import CoreData
 
 struct MovieListFactory {
     let movieListEntity = MovieList.entity()
-    let context: NSManagedObjectContext
+    let context: NSManagedObjectContext = CoreDataStack.shared.viewContext
     
     @discardableResult
     func createNewMovieList(name: String) -> MovieList {

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="MovieList" representedClassName="MovieList" syncable="YES">
-        <attribute name="createDate" attributeType="Date" usesScalarValueType="NO"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="MovieList" representedClassName=".MovieList" syncable="YES" codeGenerationType="class">
+        <attribute name="createDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String" defaultValueString="New List"/>
-        <relationship name="movieListItems" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="MovieListItem" inverseName="movieList" inverseEntity="MovieListItem"/>
+        <relationship name="movieListItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieListItem" inverseName="movieList" inverseEntity="MovieListItem"/>
     </entity>
-    <entity name="MovieListItem" representedClassName="MovieListItem" syncable="YES">
+    <entity name="MovieListItem" representedClassName=".MovieListItem" syncable="YES" codeGenerationType="class">
         <attribute name="apiID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="posterPath" optional="YES" attributeType="String"/>
-        <attribute name="title" attributeType="String"/>
-        <relationship name="movieList" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="MovieList" inverseName="movieListItems" inverseEntity="MovieList"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="movieList" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieList" inverseName="movieListItems" inverseEntity="MovieList"/>
     </entity>
     <elements>
-        <element name="MovieList" positionX="-36" positionY="36" width="128" height="74"/>
-        <element name="MovieListItem" positionX="-36" positionY="54" width="128" height="104"/>
+        <element name="MovieList" positionX="-36" positionY="36" width="128" height="14"/>
+        <element name="MovieListItem" positionX="-36" positionY="54" width="128" height="14"/>
     </elements>
 </model>

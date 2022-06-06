@@ -14,7 +14,7 @@ struct MovieListView: View {
     let viewContext = CoreDataStack.shared.viewContext
     
     var listItems: [MovieListItem] {
-        return movieList.movieListItems?.array.map({$0 as? MovieListItem}).compactMap({$0}) ?? []
+        return movieList.listItems
     }
     let movieDBRouter = TheMovieDBServiceRouter()
     
@@ -24,7 +24,7 @@ struct MovieListView: View {
                 NavigationLink(tag: listItem, selection: $selectedListItem) {
                     MovieDetailsView(prototypeMovie: getPrototypeMovie(from: listItem))
                 } label: {
-                    MovieListCell(movieTitle: listItem.title, imageURL: movieDBRouter.imageRequest(forImageId: listItem.posterPath ?? "").url, releaseData: DateFormatter.stringDate(fromSharedFormattedDate: listItem.date ), proxySize: proxy.size)
+                    MovieListCell(movieTitle: listItem.movieTitle, imageURL: movieDBRouter.imageRequest(forImageId: listItem.posterPath ?? "").url, releaseData: listItem.formattedStringDate, proxySize: proxy.size)
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button(role: .destructive) {
@@ -34,14 +34,14 @@ struct MovieListView: View {
                     }
                 }
             }
-            .navigationTitle(movieList.name)
+            .navigationTitle(movieList.listName)
             .listStyle(.plain)
         }
     }
     
     func getPrototypeMovie(from movieListItem: MovieListItem) -> Movie {
-        let releaseDate = DateFormatter.stringDate(fromSharedFormattedDate: movieListItem.date)
-        return .init(genreIDS: [], id: Int(movieListItem.apiID), originalTitle: movieListItem.title, overview: "", posterPath: movieListItem.posterPath, releaseDate: releaseDate, voteAverage: 0)
+        let releaseDate = movieListItem.formattedStringDate
+        return .init(genreIDS: [], id: Int(movieListItem.apiID), originalTitle: movieListItem.movieTitle, overview: "", posterPath: movieListItem.posterPath, releaseDate: releaseDate, voteAverage: 0)
     }
 }
 

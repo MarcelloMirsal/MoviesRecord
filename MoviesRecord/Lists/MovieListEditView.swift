@@ -15,8 +15,8 @@ struct MovieListEditView: View {
     private let movieListOriginalName: String
     init(movieListToEdit: MovieList) {
         self.movieListToEdit = movieListToEdit
-        self.movieListOriginalName = movieListToEdit.name
-        self._movieListNameText = .init(initialValue: movieListToEdit.name)
+        self.movieListOriginalName = movieListToEdit.listName
+        self._movieListNameText = .init(initialValue: movieListToEdit.listName)
     }
 
     var body: some View {

@@ -26,7 +26,7 @@ struct ListsView: View {
                         .environmentObject(movieList)
                 } label: {
                     HStack(spacing: 8) {
-                        Text(movieList.name)
+                        Text(movieList.listName)
                             .fontWeight(.bold)
                         Spacer()
                         Text(movieList.movieListItems?.count.description ?? "")
@@ -57,7 +57,7 @@ struct ListsView: View {
         .sheet(item: $movieListToEdit, content: { movieListToEdit in
             MovieListEditView(movieListToEdit: movieListToEdit)
         })
-        .confirmationDialog("are you sure you want to delete List '\(movieListToDelete?.name ?? "")' ?", isPresented: $canShowConfirmationDialog, titleVisibility: .visible, presenting: movieListToDelete, actions: { data in
+        .confirmationDialog("'\(movieListToDelete?.name ?? "")' will be deleted from iCloud and all other devices too. This action cannot be undone.", isPresented: $canShowConfirmationDialog, titleVisibility: .visible, presenting: movieListToDelete, actions: { data in
             Button("Delete", role: .destructive) {
                 guard let movieListToDelete = movieListToDelete else { return }
                 viewModel.delete(movieListToDelete)

@@ -13,6 +13,7 @@ struct MainView: View {
             DiscoverMoviesView()
             ListsView()
             SearchView()
+            ExtraInfoView()
         }
     }
 }
