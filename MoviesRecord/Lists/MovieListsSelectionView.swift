@@ -69,7 +69,7 @@ struct MovieListsSelectionView: View {
         guard listItems.contains(where: {$0.apiID == movie.id}) == false else {
             return
         }
-        let movieListItemFactory = MovieListItemFactory(context: viewContext)
+        let movieListItemFactory = MovieListItemFactory()
         movieListItemFactory.createMovieListItem(apiID: movie.id, title: movie.originalTitle, posterPath: movie.posterPath, date: DateFormatter.date(fromSharedFormattedStringDate: movie.releaseDate), movieList: selectedMovieList)
     }
 }

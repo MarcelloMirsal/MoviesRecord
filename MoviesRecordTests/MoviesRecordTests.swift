@@ -1,14 +1,13 @@
 //
-//  TheMovieDBServiceTests.swift
-//  TheMovieDBServiceTests
+//  MoviesRecordTests.swift
+//  MoviesRecordTests
 //
 //  Created by Mohammed Mirsal on 07/06/2022.
 //
 
 import XCTest
-@testable import TheMovieDBService
 
-class TheMovieDBServiceTests: XCTestCase {
+class MoviesRecordTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -28,7 +27,7 @@ class TheMovieDBServiceTests: XCTestCase {
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
-        self.measure {
+        measure {
             // Put the code you want to measure the time of here.
         }
     }

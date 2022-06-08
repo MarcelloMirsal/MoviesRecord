@@ -8,12 +8,17 @@
 import SwiftUI
 
 struct MainView: View {
+    @AppStorage("IsFirstTimeLaunch", store: .standard) var isFirstTimeLaunch: Bool = true
     var body: some View {
         TabView {
             DiscoverMoviesView()
             ListsView()
             SearchView()
             ExtraInfoView()
+        }        
+        .sheet(isPresented: $isFirstTimeLaunch) {
+            OnBoardingView()
+                .interactiveDismissDisabled(true)
         }
     }
 }

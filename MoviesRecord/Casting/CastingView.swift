@@ -28,7 +28,6 @@ struct CastingView: View {
             .padding(.horizontal, 10)
             .padding(.bottom, 32)
         }
-        .background(Color(uiColor: .systemGray5))
         .navigationBarTitle("Casting")
         .navigationBarTitleDisplayMode(.inline)
         .dynamicTypeSize(..<DynamicTypeSize.accessibility3)

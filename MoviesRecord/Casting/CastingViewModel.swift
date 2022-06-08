@@ -5,6 +5,7 @@
 //  Created by Mohammed Mirsal on 08/05/2022.
 //
 
+import SwiftUI
 import TheMovieDBService
 
 class CastingViewModel: ObservableObject {
@@ -40,11 +41,12 @@ class CastingViewModel: ObservableObject {
         return router.castImageRequest(forImageId: posterPath)
     }
     
+    @MainActor
     func requestCasting() async {
         guard feedStates != .loading else {return}
         feedStates = .loading
         let result = await movieDBService.requestMovieCasting(movieID: movieID.description, decodingType: MovieCastingResponse.self)
-        await handle(result)
+        handle(result)
     }
     
     // MARK: Handlers

@@ -27,9 +27,13 @@ struct SearchResultsView: View {
                 }
             }
             .listStyle(.plain)
-            .onAppear {
-                print(proxy.size, " from SearchResults")
-            }
+            .overlay( content: {
+                if viewModel.movies.isEmpty && !viewModel.isInitialFeedLoading && !viewModel.isInitialFeedFailedToLoad {
+                    Text("No results for '\(searchingText)' ")
+                        .bold()
+                        .foregroundColor(.secondary)
+                }
+            })
         }
         .overlay(content: {
             if viewModel.isInitialFeedLoading {

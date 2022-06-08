@@ -33,27 +33,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ADE8412928060BCF0089A246"
-               BuildableName = "MoviesRecordTests.xctest"
-               BlueprintName = "MoviesRecordTests"
-               ReferencedContainer = "container:MoviesRecord.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ADECAB302804A5FA002F6CFC"
-               BuildableName = "MoviesRecordUITests.xctest"
-               BlueprintName = "MoviesRecordUITests"
-               ReferencedContainer = "container:MoviesRecord.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ADECAB512804A96A002F6CFC"
+               BlueprintIdentifier = "ADBDE2FF284FB6EE00713EA3"
                BuildableName = "TheMovieDBServiceTests.xctest"
                BlueprintName = "TheMovieDBServiceTests"
                ReferencedContainer = "container:MoviesRecord.xcodeproj">
@@ -63,9 +43,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ADAD28762804B61F008FF0C7"
-               BuildableName = "MoviesRecordTestsQER.xctest"
-               BlueprintName = "MoviesRecordTestsQER"
+               BlueprintIdentifier = "ADBDE331284FB88600713EA3"
+               BuildableName = "MoviesRecordTests.xctest"
+               BlueprintName = "MoviesRecordTests"
                ReferencedContainer = "container:MoviesRecord.xcodeproj">
             </BuildableReference>
          </TestableReference>
